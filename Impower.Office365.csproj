@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <PackageId>Impower.Office365.Activities</PackageId>
+    <Company>Impower.AI</Company>
+    <PackageIcon>logo.jpg</PackageIcon>
+    <PackageIconUrl />
+    <PackageTags>uipath api office office365 outlook sharepoint onedrive</PackageTags>
+    <Version>3.0.58</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/impower-ai/impower-office365-activities</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Graph" Version="3.32.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.42.0" />
+    <PackageReference Include="UiPath.MicrosoftOffice365.Activities" Version="1.11.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="logo.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="System.Activities" />
+  </ItemGroup>
+
+</Project>
