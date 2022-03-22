@@ -7,7 +7,7 @@
     <PackageIcon>logo.jpg</PackageIcon>
     <PackageIconUrl />
     <PackageTags>uipath api office office365 outlook sharepoint onedrive</PackageTags>
-    <Version>3.0.84</Version>
+    <Version>3.0.85</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/impower-ai/impower-office365-activities</PackageProjectUrl>
   </PropertyGroup>

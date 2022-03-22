@@ -10,10 +10,16 @@ namespace Impower.Office365.Mail
             this GraphServiceClient client,
             CancellationToken token,
             string messageID,
-            string email
+            string email,
+            bool getAttachments = true
         )
         {
-            return await client.Users[email].Messages[messageID].Request().GetAsync(token);
+            var request = client.Users[email].Messages[messageID].Request();
+            if (getAttachments)
+            {
+                request = request.Expand(message => message.Attachments);
+            }
+            return await request.GetAsync(token);
         }
     }
 }

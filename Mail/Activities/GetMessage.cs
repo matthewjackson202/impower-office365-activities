@@ -22,17 +22,23 @@ namespace Impower.Office365.Mail
         [Description("Email address of user the email is associated with")]
         [RequiredArgument]
         public InArgument<string> Email { get; set; }
+        [Category("Misc")]
+        [Description("Retrieve Attachments? Set to 'False' for performance use-cases.")]
+        [DefaultValue(true)]
+        public InArgument<bool> GetAttachments { get; set; }
         [Category("Output")]
         [Description("Message object retrieved")]
         public OutArgument<Message> Message { get; set; }
 
 
-        internal string messageID;
-        internal string email;
+        internal string MessageIdValue;
+        internal string EmailValue;
+        internal bool GetAttachmentsValue;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
-            this.messageID = context.GetValue(MessageID);
-            this.email = context.GetValue(Email);
+            GetAttachmentsValue = context.GetValue(GetAttachments);
+            MessageIdValue = context.GetValue(MessageID);
+            EmailValue = context.GetValue(Email);
         }
         protected override Task Initialize(GraphServiceClient client, AsyncCodeActivityContext context, CancellationToken token){ return Task.CompletedTask; }
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(
@@ -40,12 +46,11 @@ namespace Impower.Office365.Mail
           GraphServiceClient client
         )
         {
-            var message = await client.GetMessage(cancellationToken, messageID, email);
-            return (Action<AsyncCodeActivityContext>)(ctx =>
+            var message = await client.GetMessage(cancellationToken, MessageIdValue, EmailValue);
+            return ctx =>
             {
-                this.Message.Set(ctx, message);
-            }
-            );
+                Message.Set(ctx, message);
+            };
         }
     }
 }

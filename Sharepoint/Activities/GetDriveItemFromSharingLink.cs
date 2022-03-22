@@ -34,13 +34,13 @@ namespace Impower.Office365.Sharepoint
         }
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
-            this.sharingUrl = context.GetValue(SharingURL);
+            sharingUrl = context.GetValue(SharingURL);
         }
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(CancellationToken token, GraphServiceClient client)
         {
-            var driveItemTask = client.GetDriveItemFromSharingUrl(token, sharingUrl);
-            var listItemTask  = client.GetListItemFromSharingUrl(token, sharingUrl);
-            var siteTask = client.GetSiteFromSharingUrl(token, sharingUrl);
+            Task<DriveItem> driveItemTask = client.GetDriveItemFromSharingUrl(token, sharingUrl);
+            Task<ListItem> listItemTask  = client.GetListItemFromSharingUrl(token, sharingUrl);
+            Task<Site> siteTask = client.GetSiteFromSharingUrl(token, sharingUrl);
             await Task.WhenAll(driveItemTask, listItemTask, siteTask);
 
             return ctx =>
