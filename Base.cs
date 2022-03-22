@@ -49,7 +49,7 @@ namespace Impower.Office365
 
         }
         protected abstract Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(
-          CancellationToken cancellationToken,
+          CancellationToken token,
           GraphServiceClient client
         );
     }

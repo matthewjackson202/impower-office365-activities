@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using Impower.Office365.Sharepoint.Models;
 
 namespace Impower.Office365.Sharepoint
 {
@@ -42,7 +43,8 @@ namespace Impower.Office365.Sharepoint
             CancellationToken token,
             string driveItemId,
             string siteId,
-            string driveId
+            string driveId,
+            LinkType type
         )
         {
             IDriveRequestBuilder drive;
@@ -54,7 +56,7 @@ namespace Impower.Office365.Sharepoint
             {
                 drive = client.Sites[siteId].Drives[driveId];
             }
-            return await drive.Items[driveItemId].CreateLink("edit", "organization").Request().PostAsync(token);
+            return await drive.Items[driveItemId].CreateLink(type.ToString(), "organization").Request().PostAsync(token);
         }
         public static async Task<DriveItem> GetDriveItemFromSharingUrl(
             this GraphServiceClient client,
