@@ -33,7 +33,7 @@ namespace Impower.Office365.Sharepoint
           GraphServiceClient client
         )
         {
-            var items = await client.GetSharepointDriveItemsByPath(token, this.site.Id, this.drive.Id, path);
+            var items = await client.GetSharepointDriveItemsByPath(token, this.SiteValue.Id, this.DriveId, path);
             return (Action<AsyncCodeActivityContext>)(ctx =>
             {
                 this.DriveItems.Set(ctx, items);

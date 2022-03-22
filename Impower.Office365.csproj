@@ -7,7 +7,7 @@
     <PackageIcon>logo.jpg</PackageIcon>
     <PackageIconUrl />
     <PackageTags>uipath api office office365 outlook sharepoint onedrive</PackageTags>
-    <Version>3.0.58</Version>
+    <Version>3.0.84</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/impower-ai/impower-office365-activities</PackageProjectUrl>
   </PropertyGroup>
@@ -19,14 +19,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="logo.jpg">
+    <Resource Include="logo.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
-    </None>
+    </Resource>
   </ItemGroup>
   
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
 
 </Project>

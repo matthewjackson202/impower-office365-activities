@@ -16,19 +16,17 @@ namespace Impower.Office365.Sharepoint
         public OutArgument<string[]> Fields { get; set; }
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(CancellationToken token, GraphServiceClient client)
         {
-            var driveItem = await client.GetSharepointDriveItem(token, site.Id, drive.Id, driveItemId);
-            if(driveItem.ListItem == null)
+            if(DriveItemValue.ListItem == null)
             {
-                //Can this even happen?
                 throw new Exception("The specified DriveItem did not have a ListItem associated with it.");
             }
-            var list = await client.GetSharepointList(token, site.Id, driveItem.ListItem.ParentReference.Id);
-            var fields = list.Columns.Select(column => column.Name).ToArray();
-            return (Action<AsyncCodeActivityContext>)(ctx =>
+            List list = await client.GetSharepointList(token, SiteValue.Id, DriveItemValue.ListItem.ParentReference.Id);
+            string[] fields = list.Columns.Select(column => column.Name).ToArray();
+            return ctx =>
             {
                 ctx.SetValue(List, list);
                 ctx.SetValue(Fields, fields);
-            });
+            };
         }
     }
 }

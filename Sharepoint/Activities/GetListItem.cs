@@ -23,11 +23,11 @@ namespace Impower.Office365.Sharepoint
         public OutArgument<List> List { get; set; }
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(CancellationToken cancellationToken, GraphServiceClient client)
         {
-            return (Action<AsyncCodeActivityContext>)(ctx =>
+            return ctx =>
             {
-                ctx.SetValue(ListItem, listItem);
-                ctx.SetValue(List, list);
-            });
+                ctx.SetValue(ListItem, base.ListItemValue);
+                ctx.SetValue(List, base.ListValue);
+            };
         }
     }
 }

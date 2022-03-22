@@ -22,25 +22,19 @@ namespace Impower.Office365.Sharepoint
           GraphServiceClient client
         )
         {
-            var driveItem = await client.GetSharepointDriveItem(
-                token,
-                this.site.Id,
-                this.drive.Id,
-                driveItemId
-            );
-            return (Action<AsyncCodeActivityContext>)(ctx =>
+            return ctx =>
             {
                 Fields.Set(ctx, new Dictionary<string, object>());
-                DriveItem.Set(ctx, driveItem);
-                if (driveItem.ListItem != null)
+                DriveItem.Set(ctx, DriveItemValue);
+                if (DriveItemValue.ListItem != null)
                 {
-                    ListItem.Set(ctx, driveItem.ListItem);
-                    if (driveItem.ListItem.AdditionalData != null)
+                    ListItem.Set(ctx, DriveItemValue.ListItem);
+                    if (DriveItemValue.ListItem.AdditionalData != null)
                     {
-                        Fields.Set(ctx, driveItem.ListItem.Fields.AdditionalData);
+                        Fields.Set(ctx, DriveItemValue.ListItem.Fields.AdditionalData);
                     }
                 }
-            });
+            };
         }
     }
 }

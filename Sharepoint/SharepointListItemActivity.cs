@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Impower.Office365.Sharepoint
 {
-    public abstract class SharepointListItemActivity : SharepointSiteActivity 
+    public abstract class SharepointListItemActivity : SharepointSiteActivity
     {
         [RequiredArgument]
         [DisplayName("List ID")]
@@ -19,15 +19,15 @@ namespace Impower.Office365.Sharepoint
         [DisplayName("ListItem ID")]
         public InArgument<string> ListItemID { get; set; }
 
-        internal string listId;
-        internal string listItemId;
-        internal List list;
-        internal ListItem listItem;
+        internal string ListIdValue;
+        internal string ListItemIdValue;
+        internal List ListValue;
+        internal ListItem ListItemValue;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
             base.ReadContext(context);
-            listId = context.GetValue(ListID);
-            listItemId = context.GetValue(ListItemID);
+            ListIdValue = context.GetValue(ListID);
+            ListItemIdValue = context.GetValue(ListItemID);
         }
 
         protected override async Task Initialize(GraphServiceClient client, AsyncCodeActivityContext context, CancellationToken token)
@@ -36,7 +36,7 @@ namespace Impower.Office365.Sharepoint
 
             try
             {
-                list = await client.GetSharepointList(token, site.Id, listId);
+                ListValue = await client.GetSharepointList(token, SiteValue.Id, ListIdValue);
             }
             catch(Exception e)
             {
@@ -44,7 +44,7 @@ namespace Impower.Office365.Sharepoint
             }
             try
             {
-                listItem = await client.GetSharepointListItem(token, site.Id, listId, listItemId);
+                ListItemValue = await client.GetSharepointListItem(token, SiteValue.Id, ListIdValue, ListItemIdValue);
             }
             catch(Exception e)
             {

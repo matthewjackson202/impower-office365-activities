@@ -8,31 +8,37 @@ using System.ComponentModel;
 namespace Impower.Office365.Sharepoint
 {
     [DisplayName("Update DriveItem Fields")]
-    public class UpdateDriveItemFields : SharepointDriveItemActivity
+    public class UpdateDriveItemFields : SharepointDriveActivity
     {
+        [Category("Input")]
+        [RequiredArgument]
+        [DisplayName("DriveItem ID")]
+        public InArgument<string> DriveItemID { get; set; }
         [Category("Input")]
         [RequiredArgument]
         public InArgument<Dictionary<string, object>> Fields { get; set; }
         [Category("Output")]
         [DisplayName("Updated Fields")]
         public OutArgument<Dictionary<string, object>> UpdatedFields { get; set; }
-        internal Dictionary<string, object> fields;
+        internal Dictionary<string, object> FieldValue;
+        internal string DriveItemIdValue;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
             base.ReadContext(context);
-            fields = context.GetValue(Fields);
+            DriveItemIdValue = context.GetValue(DriveItemID);
+            FieldValue = context.GetValue(Fields);
         }
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(CancellationToken token, GraphServiceClient client)
         {
-            var fieldValueSet = new FieldValueSet
+            FieldValueSet fieldValueSet = new FieldValueSet
             {
-                AdditionalData = fields
+                AdditionalData = FieldValue
             };
-            var result = await client.UpdateSharepointDriveItemFields(token, site.Id, drive.Id, driveItemId, fieldValueSet);
-            return (Action<AsyncCodeActivityContext>)(ctx =>
+            FieldValueSet result = await client.UpdateSharepointDriveItemFields(token, SiteId, DriveId, DriveItemIdValue, fieldValueSet);
+            return ctx =>
             {
                 ctx.SetValue(UpdatedFields, result.AdditionalData);
-            });
+            };
         }
     }
 }

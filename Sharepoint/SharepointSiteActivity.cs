@@ -10,22 +10,21 @@ namespace Impower.Office365.Sharepoint
 {
     public abstract class SharepointSiteActivity : Office365Activity
     {
-        internal Site site;
-        [RequiredArgument]
         [Category("Connection")]
         [DisplayName("Sharepoint URL")]
         public InArgument<string> WebURL { get; set; }
-        internal string webUrl;
+        internal string SiteId => SiteValue.Id;
+        internal string WebUrlValue;
+        internal Site SiteValue;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
-            webUrl = context.GetValue(WebURL);
-            
+            WebUrlValue = context.GetValue(WebURL);
         }
         protected override async Task Initialize(GraphServiceClient client, AsyncCodeActivityContext context, CancellationToken token)
         {
             try
             {
-                this.site = await client.GetSharepointSite(token, webUrl);
+                SiteValue = await client.GetSharepointSite(token, WebUrlValue);
             }
             catch(Exception e)
             {

@@ -8,27 +8,31 @@ namespace Impower.Office365.Sharepoint
 {
     public abstract class SharepointDriveActivity : SharepointSiteActivity
     {
-        [RequiredArgument]
         [Category("Connection")]
         [DisplayName("Sharepoint Drive")]
+        [Description("The Target Drive Name. Defaults To The Documents Library")]
         public InArgument<string> DriveName { get; set; }
-        internal string driveName;
-        internal Drive drive;
+        internal string DriveNameValue;
+        internal Drive DriveValue;
+        internal string DriveId => DriveValue == null ? null : DriveId;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
             base.ReadContext(context);
-            driveName = context.GetValue(DriveName);
+            DriveNameValue = context.GetValue(DriveName);
         }
         protected override async Task Initialize(GraphServiceClient client, AsyncCodeActivityContext context, CancellationToken token)
         {
             await base.Initialize(client, context, token);
-            try
+            if (!String.IsNullOrWhiteSpace(DriveNameValue))
             {
-                this.drive = await client.GetSharepointDrive(token, this.site.Id, driveName);
-            }
-            catch(Exception e)
-            {
-                throw new Exception("Error Occured While Retrieving Drive By Name", e);
+                try
+                {
+                    DriveValue = await client.GetSharepointDrive(token, SiteId, DriveNameValue);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error Occured While Retrieving Drive By Name", e);
+                }
             }
         }
     }
