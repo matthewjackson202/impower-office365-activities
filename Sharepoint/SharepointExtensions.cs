@@ -96,9 +96,32 @@ namespace Impower.Office365.Sharepoint
         {
             var hostName = GetSharepointHostNameFromUrl(webUrl);
             var sitePath = GetSharepointSitePathFromUrl(webUrl);
-            Console.WriteLine(hostName + " - " + sitePath);
-
-            return await client.Sites.GetByPath(sitePath, hostName).Request().GetAsync(token);
+            try {
+                return await client.Sites.GetByPath(sitePath, hostName).Request().GetAsync(token);
+            }catch(Exception e)
+            {
+                throw new Exception($"Could not find a site for '{webUrl}'", e);
+            }
+        }
+        public static async Task<bool> GetPermissions(
+            this GraphServiceClient client,
+            CancellationToken token,
+            string siteId,
+            string driveId,
+            string itemId
+        )
+        {
+            IDriveRequestBuilder request;
+            if (String.IsNullOrWhiteSpace(driveId))
+            {
+                request = client.Sites[siteId].Drive;
+            }
+            else
+            {
+                request = client.Sites[siteId].Drives[driveId];
+            }
+            var permission = await request.Items[itemId].Permissions.Request().GetAsync(token);
+            return permission.ToList();
         }
         public static async Task<Drive> GetSharepointDrive(
             this GraphServiceClient client,

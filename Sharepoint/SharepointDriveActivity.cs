@@ -14,7 +14,7 @@ namespace Impower.Office365.Sharepoint
         public InArgument<string> DriveName { get; set; }
         internal string DriveNameValue;
         internal Drive DriveValue;
-        internal string DriveId => DriveValue == null ? null : DriveId;
+        internal string DriveId => DriveValue?.Id;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
             base.ReadContext(context);
