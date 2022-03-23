@@ -103,7 +103,7 @@ namespace Impower.Office365.Sharepoint
                 throw new Exception($"Could not find a site for '{webUrl}'", e);
             }
         }
-        public static async Task<bool> GetPermissions(
+        public static async Task<List<Permission>> GetPermissions(
             this GraphServiceClient client,
             CancellationToken token,
             string siteId,
