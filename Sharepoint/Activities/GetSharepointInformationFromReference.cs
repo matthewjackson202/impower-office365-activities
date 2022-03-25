@@ -14,10 +14,15 @@ namespace Impower.Office365.Sharepoint
     public class GetSharepointInformationFromReference : Office365Activity
     {
         [RequiredArgument]
+        [Category("Input")]
         public InArgument<ItemReference> Reference { get; set; }
+        [Category("Output")]
         public OutArgument<Drive> Drive { get; set; }
+        [Category("Output")]
         public OutArgument<Site> Site { get; set; }
+        [Category("Output")]
         public OutArgument<string> DriveName { get; set; }
+        [Category("Output")]
         public OutArgument<string> SiteURL { get; set; }
         private ItemReference ReferenceValue { get; set; }
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(CancellationToken token, GraphServiceClient client)
