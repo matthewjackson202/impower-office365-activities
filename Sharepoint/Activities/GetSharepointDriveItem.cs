@@ -17,6 +17,8 @@ namespace Impower.Office365.Sharepoint
 
         [Category("Output")]
         public OutArgument<Dictionary<string,object>> Fields { get; set; }
+        [Category("Output")]
+        public OutArgument<ItemReference> Reference { get; set; }
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(
           CancellationToken token,
           GraphServiceClient client
@@ -26,6 +28,10 @@ namespace Impower.Office365.Sharepoint
             {
                 Fields.Set(ctx, new Dictionary<string, object>());
                 DriveItem.Set(ctx, DriveItemValue);
+                if(DriveItemValue.ParentReference != null)
+                {
+                    Reference.Set(ctx, DriveItemValue.ParentReference);
+                }
                 if (DriveItemValue.ListItem != null)
                 {
                     ListItem.Set(ctx, DriveItemValue.ListItem);

@@ -22,8 +22,7 @@ namespace Impower.Office365.Sharepoint
         [Category("Output")]
         public OutArgument<ListItem> ListItem { get; set; }
         [Category("Output")]
-        public OutArgument<Site> Site { get; set; }
-
+        public OutArgument<ItemReference> Parent { get; set; }
         //[Category("Output")]
         //public OutArgument<SharedDriveItem> SharedDriveItem { get; set; }
         //[Category("Output")]
@@ -40,14 +39,18 @@ namespace Impower.Office365.Sharepoint
         {
             Task<DriveItem> driveItemTask = client.GetDriveItemFromSharingUrl(token, sharingUrl);
             Task<ListItem> listItemTask  = client.GetListItemFromSharingUrl(token, sharingUrl);
-            Task<Site> siteTask = client.GetSiteFromSharingUrl(token, sharingUrl);
-            await Task.WhenAll(driveItemTask, listItemTask, siteTask);
+            await Task.WhenAll(driveItemTask, listItemTask);
+            var driveItem = driveItemTask.Result;
+            var listItem = listItemTask.Result;
 
             return ctx =>
             {
-                ctx.SetValue(DriveItem, driveItemTask.Result);
-                ctx.SetValue(ListItem, listItemTask.Result);
-                ctx.SetValue(Site, siteTask.Result);
+                ctx.SetValue(DriveItem, driveItem);
+                ctx.SetValue(ListItem, listItem);
+                if(driveItem.ParentReference != null)
+                {
+                    ctx.SetValue(Parent, driveItem.ParentReference);
+                }
             };
 
         }

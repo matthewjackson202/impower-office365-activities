@@ -68,14 +68,22 @@ namespace Impower.Office365.Sharepoint
             return await client.Shares[encodedUrl].DriveItem.Request().GetAsync(token);
 
         }
-        public static async Task<Site> GetSiteFromSharingUrl(
+        public static async Task<Drive> GetDriveFromDriveId(
             this GraphServiceClient client,
             CancellationToken token,
-            string sharingUrl
+            string siteId,
+            string driveId
         )
         {
-            var encodedUrl = GetEncodedSharingUrl(sharingUrl);
-            return await client.Shares[encodedUrl].Site.Request().GetAsync(token);
+            return await client.Sites[siteId].Drives[driveId].Request().GetAsync(token);
+        }
+        public static async Task<Site> GetSiteFromSiteId(
+            this GraphServiceClient client,
+            CancellationToken token,
+            string siteId
+        )
+        {
+            return await client.Sites[siteId].Request().GetAsync(token);
 
         }
         public static async Task<ListItem> GetListItemFromSharingUrl(
@@ -102,26 +110,6 @@ namespace Impower.Office365.Sharepoint
             {
                 throw new Exception($"Could not find a site for '{webUrl}'", e);
             }
-        }
-        public static async Task<List<Permission>> GetPermissions(
-            this GraphServiceClient client,
-            CancellationToken token,
-            string siteId,
-            string driveId,
-            string itemId
-        )
-        {
-            IDriveRequestBuilder request;
-            if (String.IsNullOrWhiteSpace(driveId))
-            {
-                request = client.Sites[siteId].Drive;
-            }
-            else
-            {
-                request = client.Sites[siteId].Drives[driveId];
-            }
-            var permission = await request.Items[itemId].Permissions.Request().GetAsync(token);
-            return permission.ToList();
         }
         public static async Task<Drive> GetSharepointDrive(
             this GraphServiceClient client,
