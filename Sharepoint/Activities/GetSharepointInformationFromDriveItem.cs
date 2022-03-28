@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Impower.Office365.Sharepoint
 {
-    [DisplayName("Get Sharepoint Information From Reference")]
-    public class GetSharepointInformationFromReference : Office365Activity
+    [DisplayName("Get Sharepoint Information From Drive Item")]
+    public class GetSharepointInformationFromDriveItem : Office365Activity
     {
         [RequiredArgument]
         [Category("Input")]
-        public InArgument<ItemReference> Reference { get; set; }
+        public InArgument<DriveItem> DriveItem { get; set; }
         [Category("Output")]
         public OutArgument<Drive> Drive { get; set; }
         [Category("Output")]
@@ -24,18 +24,22 @@ namespace Impower.Office365.Sharepoint
         public OutArgument<string> DriveName { get; set; }
         [Category("Output")]
         public OutArgument<string> SiteURL { get; set; }
-        private ItemReference ReferenceValue { get; set; }
+        private DriveItem DriveItemValue { get; set; }
+        private Site SiteValue;
+        private Drive DriveValue;
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsyncWithClient(CancellationToken token, GraphServiceClient client)
         {
-            Site site = await client.GetSiteFromSiteId(token, ReferenceValue.SiteId);
-            Drive drive = await client.GetDriveFromDriveId(token, site.Id, ReferenceValue.DriveId);
+            SiteValue = await client.AttemptToRetreiveSiteFromDriveItem(token, DriveItemValue);
+            DriveValue = await client.AttemptToRetrieveDriveFromDriveItem(token, DriveItemValue, SiteValue.Id);
+
             return ctx =>
             {
-                ctx.SetValue(Drive, drive);
-                ctx.SetValue(Site, site);
-                ctx.SetValue(DriveName, drive.Name);
-                ctx.SetValue(SiteURL, site.WebUrl);
+                ctx.SetValue(Drive, DriveValue);
+                ctx.SetValue(Site, SiteValue);
+                ctx.SetValue(DriveName, DriveValue.Name);
+                ctx.SetValue(SiteURL, SiteValue.WebUrl);
             };
+            
 
         }
         protected override Task Initialize(GraphServiceClient client, AsyncCodeActivityContext context, CancellationToken token)
@@ -44,7 +48,7 @@ namespace Impower.Office365.Sharepoint
         }
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
-            ReferenceValue = Reference.Get(context);
+            DriveItemValue = DriveItem.Get(context);
         }
     }
 }

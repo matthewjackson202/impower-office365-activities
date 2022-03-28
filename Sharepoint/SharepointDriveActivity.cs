@@ -25,13 +25,10 @@ namespace Impower.Office365.Sharepoint
             await base.Initialize(client, context, token);
             if (!String.IsNullOrWhiteSpace(DriveNameValue))
             {
-                try
+                DriveValue = await client.GetSharepointDriveByName(token, SiteId, DriveNameValue);
+                if(DriveValue == null)
                 {
-                    DriveValue = await client.GetSharepointDrive(token, SiteId, DriveNameValue);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Error Occured While Retrieving Drive By Name", e);
+                    throw new Exception("Error Occured While Retrieving Drive By Name");
                 }
             }
         }

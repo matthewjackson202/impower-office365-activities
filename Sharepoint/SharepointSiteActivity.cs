@@ -24,7 +24,7 @@ namespace Impower.Office365.Sharepoint
         {
             try
             {
-                SiteValue = await client.GetSharepointSite(token, WebUrlValue);
+                SiteValue = await client.GetSharepointSiteFromUrl(token, WebUrlValue);
             }
             catch(Exception e)
             {
