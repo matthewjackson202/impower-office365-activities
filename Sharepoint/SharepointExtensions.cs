@@ -31,7 +31,7 @@ namespace Impower.Office365.Sharepoint
         }
         public static string GetSharepointSiteUrlFromDriveItemWebUrl(string driveItemWebUrl)
         {
-            return Regex.Match(test, ".*/sites/([^/]*(/|$)){1}").Value;
+            return Regex.Match(driveItemWebUrl, ".*/sites/([^/]*(/|$)){1}").Value;
         }
         public static string GetSharepointHostNameFromUrl(string url)
         {
