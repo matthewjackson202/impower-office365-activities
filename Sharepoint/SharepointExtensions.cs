@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Impower.Office365.Sharepoint.Models;
+using System.Text.RegularExpressions;
 
 namespace Impower.Office365.Sharepoint
 {
@@ -30,8 +31,7 @@ namespace Impower.Office365.Sharepoint
         }
         public static string GetSharepointSiteUrlFromDriveItemWebUrl(string driveItemWebUrl)
         {
-            return String.Join("/", driveItemWebUrl.Split('/').TakeUntilPlus(s => s == "sites", 1));
-
+            return Regex.Match(test, ".*/sites/([^/]*(/|$)){1}").Value;
         }
         public static string GetSharepointHostNameFromUrl(string url)
         {
