@@ -43,26 +43,26 @@ namespace Impower.Office365.Sharepoint
                 var list = await client.GetSharepointList(token, SiteId, ListId);
                 //TODO - this could be cleaned up.
                 //This will throw if one of the display names resolves to a name that already exists in the dictionary.
-                var NewFieldsValue = new Dictionary<string, object>();
-                var WritableColumns = list.Columns.Where(column => !(column.ReadOnly ?? false));
+                var newFieldsValue = new Dictionary<string, object>();
+                var writeableColumns = list.Columns.Where(column => !(column.ReadOnly ?? false));
                 foreach (var kvp in FieldsValue)
                 {
-                    var MatchingColumns = WritableColumns.Where(column => column.Name.Equals(kvp.Key));
-                    if(MatchingColumns.Any())
+                    var matchingColumns = writeableColumns.Where(column => column.Name.Equals(kvp.Key));
+                    if(matchingColumns.Any())
                     {
-                        NewFieldsValue.Add(kvp.Key, kvp.Value);
+                        newFieldsValue.Add(kvp.Key, kvp.Value);
                         break;
                     }
-                    MatchingColumns = WritableColumns.Where(column => column.DisplayName.Equals(kvp.Key));
-                    if(MatchingColumns.Any())
+                    matchingColumns = writeableColumns.Where(column => column.DisplayName.Equals(kvp.Key));
+                    if(matchingColumns.Any())
                     {
-                        var MatchingColumn = MatchingColumns.First();
-                        NewFieldsValue.Add(MatchingColumn.Name, kvp.Value);
+                        var matchingColumn = matchingColumns.First();
+                        newFieldsValue.Add(matchingColumn.Name, kvp.Value);
                         break;
                     }
-                    throw new Exception($"Could not find a field matching '{kvp.Key}' in the target list. Available fields are: {String.Join(",", WritableColumns.Select(column => column.Name))}");
+                    throw new Exception($"Could not find a field matching '{kvp.Key}' in the target list. Available fields are: {String.Join(",", writeableColumns.Select(column => column.Name))}");
                 }
-                FieldsValue = NewFieldsValue;
+                FieldsValue = newFieldsValue;
             }
 
             FieldValueSet fieldValueSet = new FieldValueSet

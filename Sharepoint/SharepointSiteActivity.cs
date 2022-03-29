@@ -13,9 +13,9 @@ namespace Impower.Office365.Sharepoint
         [Category("Connection")]
         [DisplayName("Sharepoint URL")]
         public InArgument<string> WebURL { get; set; }
-        internal string SiteId => SiteValue.Id;
-        internal string WebUrlValue;
-        internal Site SiteValue;
+        protected string SiteId => SiteValue.Id;
+        protected string WebUrlValue;
+        protected Site SiteValue;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
             WebUrlValue = context.GetValue(WebURL);

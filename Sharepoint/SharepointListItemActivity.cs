@@ -19,10 +19,10 @@ namespace Impower.Office365.Sharepoint
         [DisplayName("ListItem ID")]
         public InArgument<string> ListItemID { get; set; }
 
-        internal string ListIdValue;
-        internal string ListItemIdValue;
-        internal List ListValue;
-        internal ListItem ListItemValue;
+        protected string ListIdValue;
+        protected string ListItemIdValue;
+        protected List ListValue;
+        protected ListItem ListItemValue;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
             base.ReadContext(context);
