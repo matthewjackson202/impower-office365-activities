@@ -12,9 +12,10 @@ namespace Impower.Office365.Sharepoint
         [DisplayName("Sharepoint Drive")]
         [Description("The Target Drive Name. Defaults To The Documents Library")]
         public InArgument<string> DriveName { get; set; }
-        internal string DriveNameValue;
-        internal Drive DriveValue;
-        internal string DriveId => DriveValue?.Id;
+        protected string DriveNameValue;
+        protected Drive DriveValue;
+        protected string DriveId => DriveValue?.Id;
+        protected string ListId => DriveValue?.List?.Id;
         protected override void ReadContext(AsyncCodeActivityContext context)
         {
             base.ReadContext(context);

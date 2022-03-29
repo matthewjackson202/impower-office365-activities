@@ -241,7 +241,7 @@ namespace Impower.Office365.Sharepoint
         )
         {
             var site = await client.Sites[siteId].Request().GetAsync(token);
-            var allDrives = await client.Sites[siteId].Drives.Request().GetAsync(token);
+            var allDrives = await client.Sites[siteId].Drives.Request().Expand(drive => drive.List).GetAsync(token);
             var matchingDrives = allDrives.Where(drive => drive.Name == driveName);
             if (matchingDrives.Any())
             {

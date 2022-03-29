@@ -20,7 +20,6 @@ namespace Impower.Office365.Sharepoint
         [RequiredArgument]
         public InArgument<Dictionary<string, object>> Fields { get; set; }
         [Category("Input")]
-        [RequiredArgument]
         [DisplayName("Use Display Names")]
         [Description("Allows referencing columns by their display name. If set, keys will be matching first against the internal name and then against the display name, as a fallback.")]
         public InArgument<bool> UseDisplayNames { get; set; }
@@ -41,8 +40,7 @@ namespace Impower.Office365.Sharepoint
         {
             if (UseDisplayNamesValue)
             {
-                var driveItem = await client.GetSharepointDriveItem(token, SiteId, DriveId, DriveItemIdValue);
-                var list = await client.GetSharepointList(token, SiteId, driveItem.ListItem.ParentReference.Id);
+                var list = await client.GetSharepointList(token, SiteId, ListId);
                 //TODO - this could be cleaned up.
                 //This will throw if one of the display names resolves to a name that already exists in the dictionary.
                 var NewFieldsValue = new Dictionary<string, object>();
