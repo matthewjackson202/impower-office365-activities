@@ -214,7 +214,7 @@ namespace Impower.Office365.Sharepoint
         {
             var driveUrlName = GetDriveUrlNameFromDriveItemWebUrl(driveItemWebUrl, siteWebUrl);
             var reconstructedDriveWebUrl = $"{siteWebUrl.TrimEnd('/')}/{driveUrlName}";
-            return await client.GetSharepointDriveByUrl(token, siteId, driveUrlName);
+            return await client.GetSharepointDriveByUrl(token, siteId, reconstructedDriveWebUrl);
 
         }
         public static async Task<Drive> GetSharepointDriveByUrl(
