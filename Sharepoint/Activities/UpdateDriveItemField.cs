@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Impower.Office365.Sharepoint.Activities
+namespace Impower.Office365.Sharepoint
 {
     [DisplayName("Update DriveItem Field")]
     public class UpdateDriveItemField : SharepointDriveItemActivity
