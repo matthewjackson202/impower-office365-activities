@@ -44,7 +44,7 @@ namespace Impower.Office365.Sharepoint
                 //TODO - this could be cleaned up.
                 //This will throw if one of the display names resolves to a name that already exists in the dictionary.
                 var NewFieldsValue = new Dictionary<string, object>();
-                var WritableColumns = list.Columns.Where(column => column.ReadOnly ?? false);
+                var WritableColumns = list.Columns.Where(column => !(column.ReadOnly ?? false));
                 foreach (var kvp in FieldsValue)
                 {
                     var MatchingColumns = WritableColumns.Where(column => column.Name.Equals(kvp.Key));

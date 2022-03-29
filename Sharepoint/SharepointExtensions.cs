@@ -233,7 +233,18 @@ namespace Impower.Office365.Sharepoint
             }
             return null;
         }
-            public static async Task<Drive> GetSharepointDriveByName(
+
+        public static async Task<List> GetSharepointListFromDrive(
+            this GraphServiceClient client,
+            CancellationToken token,
+            string siteId,
+            string driveId
+        )
+        {
+            var drive = await client.Sites[siteId].Drives[driveId].Request().Expand(d => d.List).GetAsync(token);
+            return drive.List;
+        }
+        public static async Task<Drive> GetSharepointDriveByName(
             this GraphServiceClient client,
             CancellationToken token,
             string siteId,
@@ -275,7 +286,7 @@ namespace Impower.Office365.Sharepoint
             string listId
         )
         {
-            return await client.Sites[siteId].Lists[listId].Request().GetAsync(token);
+            return await client.Sites[siteId].Lists[listId].Request().Expand(list => list.Columns).GetAsync(token);
 
         }
         public static async Task<FieldValueSet> UpdateSharepointDriveItemFields(
