@@ -22,7 +22,7 @@ namespace Impower.Office365
         [Category("Connection")]
         [Description("Specify Client Object, Otherwise Uses Scope.")]
         [DisplayName("Graph Client")]
-        public InArgument<GraphServiceClient> GraphClient { get; set; }
+        private InArgument<GraphServiceClient> GraphClient { get; set; }
 
         protected abstract void ReadContext(AsyncCodeActivityContext context);
         protected abstract Task Initialize(GraphServiceClient client, AsyncCodeActivityContext context, CancellationToken token);
